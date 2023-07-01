@@ -13,7 +13,14 @@ return new class extends Migration
     {
         Schema::create('books', function (Blueprint $table) {
             $table->id();
+            $table->string('book_name');
+            $table->string('book_author');
+            $table->string('book_description', 1000);
+            $table->bigInteger('category_id')->unsigned();
+            $table->string('book_image');
             $table->timestamps();
+
+            $table->foreign('category_id')->references('id')->on('categories');
         });
     }
 
