@@ -8,8 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Book extends Model
 {
     use HasFactory;
+    public $timestamps = true;
 
-    public function books()
+    protected $fillable = ['category_id', 'book_name', 'book_author',
+    'book_description', 'book_image', 'created_at', 'updated_at'];
+    
+    public function category()
     {
         return $this->belongsTo(category::class);
     }

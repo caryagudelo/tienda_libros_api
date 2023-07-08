@@ -15,12 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('book_name');
             $table->string('book_author');
-            $table->string('book_description', 1000);
+            $table->string('book_description', 3000);
             $table->bigInteger('category_id')->unsigned();
+            $table->bigInteger('author_id')->unsigned();
             $table->string('book_image');
             $table->timestamps();
 
             $table->foreign('category_id')->references('id')->on('categories');
+            $table->foreing('author_id')->references('id')->on('authors');
         });
     }
 

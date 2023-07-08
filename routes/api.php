@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\controllers\BookController;
+use App\Http\controllers\Api\v1\BookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +27,7 @@ Route::prefix('v1')->group(function () {
         ]);
     
     });
-    Route::get('books',[BookController::class, 'index']);
+    Route::apiResource('books',BookController::class);
 });
 
 
