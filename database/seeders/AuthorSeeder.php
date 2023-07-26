@@ -42,16 +42,17 @@ class AuthorSeeder extends Seeder
         'name' =>'LEÓN TOLSTÓI',
         'description' =>'Adscrito a la corriente realista, el novelista ruso intentó con sus obras reflejar la sociedad en la que vivía. Fruto de esta inquietud, escribió novelas de la talla de “Guerra y Paz” y “Anna Karenina”. Esta última contó con una primera versión cinematográfica protagonizada por Greta Garbo en 1935.'
     ],
+[
             'name' =>'EMILE ZOLA',
             'description' =>'Considerado como el padre y el mayor representante del naturalismo. Tuvo un papel muy relevante en la revisión del proceso de Alfred Dreyfus, que le costó el exilio. En los treinta y un volúmenes que comprenden las veinte novelas trazó la genealogía de más de doscientos personajes y sus textos fueron tan elogiados como criticados.'
-        ],
-    [ss
-        'name' =>'BRAM STOKER'
+],
+    [
+        'name' => 'BRAM STOKER',
         'description' =>'Dedicado por completo a la novela de terror, Stoker consiguió crear uno de los personajes de ficción más famosos y temidos de todos los tiempos: Drácula. La obra epistolar sobre el vampiro de los Cárpatos, inspirada en el folklore europeo, cumple en mayo 117 años sin perder un ápice de su influencia en la cultura y el imaginario popular. '
         
     ]
     ];
-    DB::table('authors')->insert($authors);
+    
 }
 }
     
