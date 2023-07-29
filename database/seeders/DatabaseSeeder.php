@@ -16,7 +16,12 @@ $this->call([
     UserSeeder::class,
     CategorySeeder::class,
     BookSeeder::class,
-    AuthorSeeder::class,
+    AuthorsSeeder::class,
+    BookAuthorsSeeder::class,
+    BookLiteraryGenresSeeder::class,
+    LiteraryGenresSeeder::class,
+
+
 ]);
     }
 }

@@ -1,56 +1,57 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1;
+namespace App\Http\Controllers;
 
 use App\Models\LiteraryGenre;
-use Illuminate\Http\Response;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Api\Controller;
 
 class LiteraryGenreController extends Controller
 {
     public function index()
     {
         $literaryGenres = LiteraryGenre::all();
-
-        return response()->json(['success' => true, 'data' => $literaryGenres]);
+        return view('literary_genres.index', compact('literaryGenres'));
     }
 
-    public function show($id)
+    public function create()
     {
-        $literaryGenre = LiteraryGenre::find($id);
-
-        return $this->checkModelExists(function () use ($literaryGenre) {
-            return response()->json(['success' => true, 'data' => $literaryGenre]);
-        }, $literaryGenre, trans('messages.literary_genre.not_found'));
+        return view('literary_genres.create');
     }
 
     public function store(Request $request)
     {
-        $literaryGenre = LiteraryGenre::create($request->all());
+        $request->validate([
+            'name' => 'required|unique:literary_genres',
+        ]);
 
-        return response()->json(['success' => true, 'message' => trans('messages.literary_genre.created'), 'data' => $literaryGenre], Response::HTTP_CREATED);
+        LiteraryGenre::create([
+            'name' => $request->name,
+        ]);
+
+        return redirect()->route('literary_genres.index')->with('success', 'Literary genre created successfully.');
     }
 
-    public function update(Request $request, $id)
+    public function edit(LiteraryGenre $literaryGenre)
     {
-        $literaryGenre = LiteraryGenre::find($id);
-
-        return $this->checkModelExists(function () use ($literaryGenre, $request) {
-            $literaryGenre->update($request->all());
-
-            return response()->json(['success' => true, 'message' => trans('messages.literary_genre.updated'), 'data' => $literaryGenre], Response::HTTP_CREATED);
-        }, $literaryGenre, trans('messages.literary_genre.not_found'));
+        return view('literary_genres.edit', compact('literaryGenre'));
     }
 
-    public function destroy($id)
+    public function update(Request $request, LiteraryGenre $literaryGenre)
     {
-        $literaryGenre = LiteraryGenre::find($id);
+        $request->validate([
+            'name' => 'required|unique:literary_genres,name,' . $literaryGenre->id,
+        ]);
 
-        return $this->checkModelExists(function () use ($literaryGenre){
-            $literaryGenre->delete();
+        $literaryGenre->update([
+            'name' => $request->name,
+        ]);
 
-            return response()->json(null, Response::HTTP_NO_CONTENT);
-        }, $literaryGenre, trans('messages.literary_genre.not_found'));
+        return redirect()->route('literary_genres.index')->with('success', 'Literary genre updated successfully.');
+    }
+
+    public function destroy(LiteraryGenre $literaryGenre)
+    {
+        $literaryGenre->delete();
+        return redirect()->route('literary_genres.index')->with('success', 'Literary genre deleted successfully.');
     }
 }

@@ -1,56 +1,56 @@
 <?php
-namespace App\Http\Controllers\api\v1;
+namespace App\Http\Controllers;
 
-
-use App\Http\Requests\SaveAuthorRequest;
 use App\Models\Author;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\support\Facades\Log;
-
 
 class AuthorController extends Controller
-
 {
     public function index()
     {
-        
-            $author = Author::all();
-
-            return response()->json(['success' => true, 'data' => $author]);
-        }
-    public function show($id)
-    {
-        $author = author::find($id);
-
-       return $this->checkModelExists(function () use ($author) {
-        return response()->json(['success'=> true, 'data' => $author]);
- }, $author,  trans('messages.author.not_found'));
+        $authors = Author::all();
+        return view('authors.index', compact('authors'));
     }
-    public function store(SaveAuthorRequest  $request)
-    {
-        $author = Author::create($request->all());
-        return response()->json(['success' => true, 'message' => trans('messages.author.created'), 'data' => $author]);
 
+    public function create()
+    {
+        return view('authors.create');
     }
-    public function update(SaveAuthorRequest $request, $id)
+
+    public function store(Request $request)
     {
-        $author = Author::find($id);
-         return $this->checkModelExists(function () use ($author, $request) {
-                $author->update($request->all());
- 
-   return response()->json(['success' => true, 'message' => trans('messages.author.updated'), 'data' => $author]);
-}, $author, trans('messages.author.not_found'));
-        }
-    public function destroy($id)
+        $request->validate([
+            'name' => 'required|unique:authors',
+        ]);
+
+        Author::create([
+            'name' => $request->name,
+        ]);
+
+        return redirect()->route('authors.index')->with('success', 'Author created successfully.');
+    }
+
+    public function edit(Author $author)
     {
-        $author= Author::find($id);
-        return $this->checkModelExists(function () use ($author){
-            $author->delete();
-        
+        return view('authors.edit', compact('author'));
+    }
+
+    public function update(Request $request, Author $author)
+    {
+        $request->validate([
+            'name' => 'required|unique:authors,name,' . $author->id,
+        ]);
+
+        $author->update([
+            'name' => $request->name,
+        ]);
+
+        return redirect()->route('authors.index')->with('success', 'Author updated successfully.');
+    }
+
+    public function destroy(Author $author)
+    {
         $author->delete();
-        return response()->json(null, Response::HTTP_NO_CONTENT);
-        }, $author, trans('messages.author.not_found'));
+        return redirect()->route('authors.index')->with('success', 'Author deleted successfully.');
     }
 }
-

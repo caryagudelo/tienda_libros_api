@@ -14,9 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('literary_genres', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('name', 100);
-            $table->string('description', 1000);
+            $table->id();
+            $table->string('name');
             $table->timestamps();
         });
     }
